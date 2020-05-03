@@ -1,6 +1,8 @@
 # PolyQuest
 A 2D-3D platformer and a work in progress
 
+To download, either download all of the files or download the
+
 Some previous versions:
 
 Easier level: https://pbreslinuo.github.io/PolyQuest_PoC/
