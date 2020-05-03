@@ -1,7 +1,7 @@
 # PolyQuest
 A 2D-3D platformer and a work in progress
 
-To download, either download all of the files or download the
+To download, either download all of the files or download the unity package and import it into a new unity project.
 
 Some previous versions:
 
