@@ -9,14 +9,19 @@ public class PlayerController : MonoBehaviour
     public float selfGravity;
     public float moveSpeed;
     public int numJumps;
+    public float projectileSpeed;
+    public int numProjectiles;
+    public GameObject projectile;
 
     Vector3 m_Movement;
     CharacterController m_CharController;
     Transform m_Transform;
     Collider m_Collider;
-    Renderer m_Renderer;
+    SpriteRenderer m_SpriteRenderer;
+    Animator m_Animator;
 
     private int currentJumps;
+    private int currentProjectiles;
     private float verticalSpeed = 0;
     private float horizSpeed = 0;
     private bool facingRight = true;
@@ -29,7 +34,8 @@ public class PlayerController : MonoBehaviour
         m_Transform = GetComponent<Transform>();
         m_CharController = GetComponent<CharacterController>();
         m_Collider = GetComponent<BoxCollider>();
-        m_Renderer = GetComponent<Renderer>();
+        m_SpriteRenderer = GetComponent<SpriteRenderer>();
+        m_Animator = GetComponent<Animator>();
         currentJumps = numJumps;
     }
 
@@ -44,23 +50,56 @@ public class PlayerController : MonoBehaviour
         // first, check grounded things: reset jumps, movement, reset bonked
         if (m_CharController.isGrounded)
         {
+            m_Animator.SetBool("Grounded", true);
+            m_Animator.SetBool("Jumping", false);
             HorizontalMovement();
             currentJumps = numJumps;
             verticalSpeed = -selfGravity * Time.deltaTime;
             if (Input.GetKeyDown("space"))
             {
                 verticalSpeed = jumpPower;
+                m_Animator.SetBool("Jumping", true);
             }
         }
         else // is in air
         {
+            m_Animator.SetBool("Jumping", false);
+            m_Animator.SetBool("Grounded", false);
             verticalSpeed -= selfGravity * Time.deltaTime;
+            // put this in here so we can turn around midair- for sprite flipping and shooting
+            if (Input.GetKey(KeyCode.A)) facingRight = false;
+            else if (Input.GetKey(KeyCode.D)) facingRight = true;
             if (Input.GetKeyDown("space") && currentJumps > 0)
             {
+                m_Animator.SetBool("Jumping", true);
                 HorizontalMovement();
                 verticalSpeed = jumpPower;
                 currentJumps--;
             }
+        }
+
+        // shoot projectile code
+        if (Input.GetKeyDown(KeyCode.RightControl) && currentProjectiles < numProjectiles)
+        {
+            // create an arrow
+            GameObject Arrow = Instantiate(projectile, transform.position, transform.rotation);
+            // set it's direction for both movement and sprite facing
+            Vector3 fireDirection;
+            if (facingRight)
+            {
+                fireDirection = Vector3.right;
+                Arrow.GetComponent<SpriteRenderer>().flipX = false;
+            }
+            else
+            {
+                fireDirection = Vector3.left;
+                Arrow.GetComponent<SpriteRenderer>().flipX = true;
+            }
+            // launch it and update number of onscreen projectiles
+            Arrow.GetComponent<Rigidbody>().velocity = fireDirection * projectileSpeed;
+            currentProjectiles++;
+            // then call coroutine which checks if its colliding less frequently than unity updates, but enough to be responsive
+            StartCoroutine(ProjectileCoroutine(Arrow));
         }
 
         // finally, check our two types of 'bonks'
@@ -88,6 +127,7 @@ public class PlayerController : MonoBehaviour
         if ((facingRight && !prevFacingRight) || (!facingRight && prevFacingRight))
         {
             //some sort of character flip code goes here
+            m_SpriteRenderer.flipX = !m_SpriteRenderer.flipX;
         }
         // and set current facing to prev facing for next iteration
         prevFacingRight = facingRight;
@@ -109,10 +149,26 @@ public class PlayerController : MonoBehaviour
                 horizSpeed = moveSpeed;
                 facingRight = true;
             }
+            m_Animator.SetBool("Walking", true);
         }
         else
         {
             horizSpeed = 0;
+            m_Animator.SetBool("Walking", false);
         }
+    }
+
+    IEnumerator ProjectileCoroutine(GameObject thisObject)
+    {
+        // check 10 times a second
+        yield return new WaitForSeconds(0.1f);
+        // if we're colliding with something or went offstage, destroy this and lower num of onscreen projectiles
+        if (thisObject.GetComponent<ProjectileController>().isColliding() || thisObject.transform.position.x > 20 || thisObject.transform.position.x < -20)
+        {
+            currentProjectiles--;
+            Destroy(thisObject);
+        }
+        // otherwise call this coroutine again
+        else StartCoroutine(ProjectileCoroutine(thisObject));
     }
 }
