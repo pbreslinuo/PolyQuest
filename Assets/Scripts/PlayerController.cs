@@ -88,12 +88,12 @@ public class PlayerController : MonoBehaviour
             if (facingRight)
             {
                 fireDirection = Vector3.right;
-                Arrow.GetComponent<SpriteRenderer>().flipX = false;
+                Arrow.GetComponent<SpriteRenderer>().flipX = true;
             }
             else
             {
                 fireDirection = Vector3.left;
-                Arrow.GetComponent<SpriteRenderer>().flipX = true;
+                Arrow.GetComponent<SpriteRenderer>().flipX = false;
             }
             // launch it and update number of onscreen projectiles
             Arrow.GetComponent<Rigidbody>().velocity = fireDirection * projectileSpeed;
