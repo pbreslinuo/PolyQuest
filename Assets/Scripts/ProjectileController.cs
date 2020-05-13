@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class ProjectileController : MonoBehaviour
 {
-    int m_Colliding;
+    private int m_Colliding;
+    private float initTime;
+
+    private void Start()
+    {
+        initTime = Time.timeSinceLevelLoad;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,5 +25,10 @@ public class ProjectileController : MonoBehaviour
     public bool isColliding()
     {
         return (m_Colliding > 0);
+    }
+
+    public bool timeOver()
+    {
+        return (Time.timeSinceLevelLoad - initTime > 2);
     }
 }

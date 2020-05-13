@@ -163,7 +163,7 @@ public class PlayerController : MonoBehaviour
         // check 10 times a second
         yield return new WaitForSeconds(0.1f);
         // if we're colliding with something or went offstage, destroy this and lower num of onscreen projectiles
-        if (thisObject.GetComponent<ProjectileController>().isColliding() || thisObject.transform.position.x > 20 || thisObject.transform.position.x < -20)
+        if (thisObject.GetComponent<ProjectileController>().isColliding() || thisObject.GetComponent<ProjectileController>().timeOver())
         {
             currentProjectiles--;
             Destroy(thisObject);
