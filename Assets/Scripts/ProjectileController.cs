@@ -15,6 +15,10 @@ public class ProjectileController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Player") m_Colliding++;
+        if (other.tag == "Enemy")
+        {
+            other.gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -22,12 +26,12 @@ public class ProjectileController : MonoBehaviour
         if (other.tag != "Player") m_Colliding--;
     }
 
-    public bool isColliding()
+    public bool IsColliding()
     {
         return (m_Colliding > 0);
     }
 
-    public bool timeOver()
+    public bool TimeOver()
     {
         return (Time.timeSinceLevelLoad - initTime > 2);
     }

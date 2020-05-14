@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private bool prevFacingRight = true;
     private bool headBonked;
     private bool sideBonked;
+    private float startingPos_z;
 
     void Start()
     {
@@ -37,6 +38,16 @@ public class PlayerController : MonoBehaviour
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
         m_Animator = GetComponent<Animator>();
         currentJumps = numJumps;
+        startingPos_z = m_Transform.position.z;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Respawn")
+        { // if you hit an enemy, die and reset the level
+          // to do: die animation
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     void Update()
@@ -102,7 +113,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(ProjectileCoroutine(Arrow));
         }
 
-        // finally, check our two types of 'bonks'
+        // check our two types of 'bonks'
         // hit head on ceiling bonk
         if (((m_CharController.collisionFlags & CollisionFlags.Above) != 0)
             && !headBonked && verticalSpeed > 0)
@@ -119,7 +130,7 @@ public class PlayerController : MonoBehaviour
             horizSpeed = 0;
         }
 
-        // finally set and apply the movement to the player object
+        // set and apply the movement to the player object
         m_Movement.Set(horizSpeed, verticalSpeed, 0f);
         m_CharController.Move(m_Movement * Time.deltaTime);
 
@@ -163,7 +174,7 @@ public class PlayerController : MonoBehaviour
         // check 10 times a second
         yield return new WaitForSeconds(0.1f);
         // if we're colliding with something or went offstage, destroy this and lower num of onscreen projectiles
-        if (thisObject.GetComponent<ProjectileController>().isColliding() || thisObject.GetComponent<ProjectileController>().timeOver())
+        if (thisObject.GetComponent<ProjectileController>().IsColliding() || thisObject.GetComponent<ProjectileController>().TimeOver())
         {
             currentProjectiles--;
             Destroy(thisObject);

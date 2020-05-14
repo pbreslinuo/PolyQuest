@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class GameLevelAnimate : MonoBehaviour
 {
+    public EnemyWaypoint[] enemies;
+
     private Vector3 rotatePoint;
     private Vector3 rotateAxis;
     private float rotateAmount;
     private int numRotates;
     private int numRotatesLeft; // to account for literal edge cases (haha)
+    private bool finished;
 
     private void Start()
     {
+        finished = false;
         numRotates = 18;
         numRotatesLeft = 0;
     }
@@ -22,6 +26,19 @@ public class GameLevelAnimate : MonoBehaviour
         {
             transform.RotateAround(rotatePoint, rotateAxis, rotateAmount);
             numRotatesLeft--;
+            if (numRotatesLeft == 0)
+            {
+                finished = true;
+            }
+        }
+        if (finished)
+        {
+            foreach (EnemyWaypoint enemy in enemies)
+            {
+                enemy.move = true;
+                enemy.SetPositions();
+            }
+            finished = false;
         }
     }
 
@@ -31,5 +48,9 @@ public class GameLevelAnimate : MonoBehaviour
         rotateAxis = axis;
         rotateAmount = deg / numRotates;
         numRotatesLeft = numRotates - numRotatesLeft;
+        foreach (EnemyWaypoint enemy in enemies)
+        {
+            enemy.move = false;
+        }
     }
 }
