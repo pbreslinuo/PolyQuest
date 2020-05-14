@@ -5,6 +5,8 @@ To download, either download all of the files or download the unity package and 
 
 Some previous versions:
 
+Alpha Build: https://pbreslinuo.github.io/PolyQuest_Alpha_Playtest/
+
 Easier level: https://pbreslinuo.github.io/PolyQuest_PoC/
 
 Harder level: https://pbreslinuo.github.io/PolyQuest_HarderLvl/
