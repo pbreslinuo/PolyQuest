@@ -7197,11 +7197,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: knightNoParents
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: 0a6dcf3e05a3bf3469820029b4dc4550,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: d9fc62591a65365488881739bf09d1a8, type: 2}
     - target: {fileID: -4216859302048453862, guid: 0a6dcf3e05a3bf3469820029b4dc4550,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7257,6 +7252,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: 0a6dcf3e05a3bf3469820029b4dc4550,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d9fc62591a65365488881739bf09d1a8, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a6dcf3e05a3bf3469820029b4dc4550, type: 3}
 --- !u!4 &324703409 stripped
@@ -10566,11 +10566,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: bat
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: b4fddd6cd2848bd4b8aaf51e5e9e50e4,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: ba702eead5808af4e9282ddd6205f656, type: 2}
     - target: {fileID: -4216859302048453862, guid: b4fddd6cd2848bd4b8aaf51e5e9e50e4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10626,6 +10621,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: b4fddd6cd2848bd4b8aaf51e5e9e50e4,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ba702eead5808af4e9282ddd6205f656, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4fddd6cd2848bd4b8aaf51e5e9e50e4, type: 3}
 --- !u!1 &456678964
@@ -11369,7 +11369,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1
+  m_Height: 1.1
   m_Radius: 0.5
   m_SlopeLimit: 90
   m_StepOffset: 0.3
@@ -11407,7 +11407,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 1.1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &500553380
 Animator:
