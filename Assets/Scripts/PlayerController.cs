@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public float projectileSpeed;
     public int numProjectiles;
     public GameObject projectile;
+    public GameLevel gameLevel;
+    public GameObject winText;
 
     Vector3 m_Movement;
     CharacterController m_CharController;
@@ -28,17 +30,18 @@ public class PlayerController : MonoBehaviour
     private bool prevFacingRight = true;
     private bool headBonked;
     private bool sideBonked;
-    private float startingPos_z;
+    private float originalGravity;
 
     void Start()
     {
+        winText.SetActive(false);
         m_Transform = GetComponent<Transform>();
         m_CharController = GetComponent<CharacterController>();
         m_Collider = GetComponent<BoxCollider>();
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
         m_Animator = GetComponent<Animator>();
         currentJumps = numJumps;
-        startingPos_z = m_Transform.position.z;
+        originalGravity = selfGravity;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -48,6 +51,23 @@ public class PlayerController : MonoBehaviour
           // to do: die animation
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+        if (other.gameObject.tag == "Switch")
+        { // if you hit the switch and are grounded, open the gate
+            if (m_CharController.isGrounded)
+            {
+                gameLevel.RaiseGate();
+            }
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Exit")
+        {
+            if (m_CharController.isGrounded)
+            {
+                winText.SetActive(true);
+            }
+        }
     }
 
     void Update()
@@ -56,6 +76,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            selfGravity = 3 * originalGravity;
+        }
+        else
+        {
+            selfGravity = originalGravity;
         }
 
         // first, check grounded things: reset jumps, movement, reset bonked
@@ -90,7 +118,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // shoot projectile code
-        if (Input.GetKeyDown(KeyCode.RightControl) && currentProjectiles < numProjectiles)
+        if (Input.GetKeyDown(KeyCode.W) && currentProjectiles < numProjectiles)
         {
             // create an arrow
             GameObject Arrow = Instantiate(projectile, transform.position, transform.rotation);

@@ -6,6 +6,7 @@ public class GameLevel : MonoBehaviour
 {
     public GameObject edges;
     public GameObject player;
+    public GameObject gate;
     public GameLevelAnimate animatedLevel;
     public float cubeWidth;        // set this publically where cubeWidth = cube's scale 
     private float halfWidth;
@@ -43,5 +44,11 @@ public class GameLevel : MonoBehaviour
         edges.transform.Translate(translateAxis * cubeWidth);
         transform.RotateAround(rotatePoint, rotateAxis, 90);
         animatedLevel.RotateLevelAnimation(rotatePoint, rotateAxis, 90);
+    }
+
+    public void RaiseGate()
+    {
+        gate.SetActive(false);
+        animatedLevel.AnimateGate();
     }
 }
