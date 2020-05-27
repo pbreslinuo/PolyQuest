@@ -46,7 +46,7 @@ public class GameLevel : MonoBehaviour
         animatedLevel.RotateLevelAnimation(rotatePoint, rotateAxis, 90);
     }
 
-    public void RaiseGate()
+    public void SwitchHit()
     {
         gate.SetActive(false);
         animatedLevel.AnimateGate();

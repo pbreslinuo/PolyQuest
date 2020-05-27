@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public int numProjectiles;
     public GameObject projectile;
     public GameLevel gameLevel;
-    public GameObject winText;
+    public GameLevelAnimate gameLevelAnimate;
 
     Vector3 m_Movement;
     CharacterController m_CharController;
@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        winText.SetActive(false);
         m_Transform = GetComponent<Transform>();
         m_CharController = GetComponent<CharacterController>();
         m_Collider = GetComponent<BoxCollider>();
@@ -55,7 +54,7 @@ public class PlayerController : MonoBehaviour
         { // if you hit the switch and are grounded, open the gate
             if (m_CharController.isGrounded)
             {
-                gameLevel.RaiseGate();
+                gameLevel.SwitchHit();
             }
         }
     }
@@ -65,7 +64,7 @@ public class PlayerController : MonoBehaviour
         {
             if (m_CharController.isGrounded)
             {
-                winText.SetActive(true);
+                gameLevelAnimate.DisplayWinText();
             }
         }
     }
@@ -77,6 +76,12 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        if (Input.GetKey(KeyCode.M))
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+
         if (Input.GetKey(KeyCode.S))
         {
             selfGravity = 3 * originalGravity;
@@ -163,7 +168,7 @@ public class PlayerController : MonoBehaviour
         m_CharController.Move(m_Movement * Time.deltaTime);
 
         // flip the gameObject so the texture faces the other way if we changed direction
-        if ((facingRight && !prevFacingRight) || (!facingRight && prevFacingRight))
+        if (facingRight ^ prevFacingRight)
         {
             //some sort of character flip code goes here
             m_SpriteRenderer.flipX = !m_SpriteRenderer.flipX;

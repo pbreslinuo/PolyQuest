@@ -8,6 +8,9 @@ public class GameLevelAnimate : MonoBehaviour
     public GameObject gate;
     public GameObject gateEnd;
     public GameObject[] texts;
+    public GameObject panel;
+    public GameObject gameSwitch;
+    public GameObject winText;
 
     private Vector3 rotatePoint;
     private Vector3 rotateAxis;
@@ -36,6 +39,11 @@ public class GameLevelAnimate : MonoBehaviour
         numRotates = 18;
         numRotatesLeft = 0;
         textNum = 0;
+        winText.SetActive(false);
+        if (texts.Length > 0)
+        {
+            ChangeText();
+        }
     }
 
     private void Update()
@@ -85,7 +93,10 @@ public class GameLevelAnimate : MonoBehaviour
         {
             enemy.move = false;
         }
-        ChangeText();
+        if (texts.Length > 0)
+        {
+            ChangeText();
+        }
     }
 
     public void AnimateGate()
@@ -95,6 +106,9 @@ public class GameLevelAnimate : MonoBehaviour
         startingPos = gate.transform.position;
         endingPos = gateEnd.transform.position;
         dist = Vector3.Distance(startingPos, endingPos);
+
+        // the following doesn't work well for all switches, only the one in the tutorial
+        gameSwitch.transform.Rotate(0, 180, 0);
     }
 
     private void ChangeText()
@@ -103,14 +117,19 @@ public class GameLevelAnimate : MonoBehaviour
         {
             text.SetActive(false);
         }
-        textNum++;
         if (textNum >= texts.Length)
         {
             displayText = false;
+            panel.SetActive(false);
         }
         if (displayText)
         {
-            texts[textNum].SetActive(true);
+            texts[textNum++].SetActive(true);
         }
+    }
+
+    public void DisplayWinText()
+    {
+        winText.SetActive(true);
     }
 }

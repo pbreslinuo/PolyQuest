@@ -13,10 +13,10 @@ public class MainMenu : MonoBehaviour
                 SceneManager.LoadScene("TutorialLevel");
                 break;
             case "Beginner":
-                SceneManager.LoadScene("CubeLevel1");
+                SceneManager.LoadScene("MediumLevel");
                 break;
             case "Difficult":
-                SceneManager.LoadScene("MediumLevel");
+                SceneManager.LoadScene("testbed");
                 break;
         }
     }

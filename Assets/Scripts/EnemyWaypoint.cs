@@ -7,40 +7,25 @@ public class EnemyWaypoint : MonoBehaviour
 {
     public Transform[] destinations;
     public float moveSpeed = 1.0f;
-    private float stoppingDist;
-
-    private float dist;
-    private float distCovered;
-    private float fracJourney;
-    private float startTime;
-    private Vector3 startingPos;
-    private Vector3 nextWaypoint;
-    private int waypointCounter;
+    public float stoppingDist;
+    public float dist;
+    public float distCovered;
+    public float fracJourney;
+    public float startTime;
+    public Vector3 startingPos;
+    public Vector3 nextWaypoint;
+    public int waypointCounter;
     public bool move;
 
     void Start()
     {
         move = true;
-        stoppingDist = 0.25f;
+        stoppingDist = 0.1f;
         waypointCounter = -1;
         SetupNextWaypoint();
     }
 
-    void Update()
-    {
-        if (move)
-        {
-            distCovered = (Time.time - startTime) * moveSpeed;
-            fracJourney = distCovered / dist;
-            transform.position = Vector3.Lerp(startingPos, nextWaypoint, fracJourney);
-            if (Vector3.Distance(transform.position, nextWaypoint) < stoppingDist)
-            {
-                SetupNextWaypoint();
-            }
-        }
-    }
-
-    void SetupNextWaypoint()
+    public void SetupNextWaypoint()
     {
         waypointCounter = (waypointCounter + 1) % destinations.Length;
         SetPositions();
@@ -48,9 +33,12 @@ public class EnemyWaypoint : MonoBehaviour
 
     public void SetPositions()
     {
-        startTime = Time.time;
-        startingPos = transform.position;
-        nextWaypoint = destinations[waypointCounter].position;
-        dist = Vector3.Distance(startingPos, nextWaypoint);
+        if (destinations.Length > 0)
+        {
+            startTime = Time.time;
+            startingPos = transform.position;
+            nextWaypoint = destinations[waypointCounter].position;
+            dist = Vector3.Distance(startingPos, nextWaypoint);
+        }
     }
 }
