@@ -11,6 +11,7 @@ public class GameLevelAnimate : MonoBehaviour
     public GameObject panel;
     public GameObject gameSwitch;
     public GameObject winText;
+    public GameObject winPic;
 
     private Vector3 rotatePoint;
     private Vector3 rotateAxis;
@@ -40,6 +41,7 @@ public class GameLevelAnimate : MonoBehaviour
         numRotatesLeft = 0;
         textNum = 0;
         winText.SetActive(false);
+        winPic.SetActive(false);
         if (texts.Length > 0)
         {
             ChangeText();
@@ -131,5 +133,6 @@ public class GameLevelAnimate : MonoBehaviour
     public void DisplayWinText()
     {
         winText.SetActive(true);
+        winPic.SetActive(true);
     }
 }
