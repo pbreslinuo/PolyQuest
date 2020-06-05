@@ -89,108 +89,111 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.S))
+        if (died == false)
         {
-            selfGravity = 3 * originalGravity;
-        }
-        else
-        {
-            selfGravity = originalGravity;
-        }
-        // first, check grounded things: reset jumps, movement, reset bonked
-        if (m_CharController.isGrounded)
-        {
-            m_Animator.SetBool("Grounded", true);
-            m_Animator.SetBool("Jumping", false);
-            HorizontalMovement();
-            currentJumps = numJumps;
-            verticalSpeed = -selfGravity * Time.deltaTime;
-            if (Input.GetKeyDown("space"))
+            if (Input.GetKey(KeyCode.S))
             {
-                source.PlayOneShot(jump1);
-                verticalSpeed = jumpPower;
-                m_Animator.SetBool("Jumping", true);
-            }
-        }
-        else // is in air
-        {
-            m_Animator.SetBool("Jumping", false);
-            m_Animator.SetBool("Grounded", false);
-            verticalSpeed -= selfGravity * Time.deltaTime;
-            // put this in here so we can turn around midair- for sprite flipping and shooting
-            if (Input.GetKey(KeyCode.A)) facingRight = false;
-            else if (Input.GetKey(KeyCode.D)) facingRight = true;
-            if (Input.GetKeyDown("space") && currentJumps > 0)
-            {
-                if (currentJumps == 2)
-                {
-                    source.PlayOneShot(jump2);
-                }
-                else if (currentJumps == 1)
-                {
-                    source.PlayOneShot(jump3);
-                }
-                m_Animator.SetBool("Jumping", true);
-                HorizontalMovement();
-                verticalSpeed = jumpPower;
-                currentJumps--;
-            }
-        }
-
-        // shoot projectile code
-        if (Input.GetKeyDown(KeyCode.W) && currentProjectiles < numProjectiles)
-        {
-            source.PlayOneShot(shootArrow);
-            // create an arrow
-            GameObject Arrow = Instantiate(projectile, transform.position, transform.rotation);
-            // set it's direction for both movement and sprite facing
-            Vector3 fireDirection;
-            if (facingRight)
-            {
-                fireDirection = Vector3.right;
-                Arrow.GetComponent<SpriteRenderer>().flipX = true;
+                selfGravity = 3 * originalGravity;
             }
             else
             {
-                fireDirection = Vector3.left;
-                Arrow.GetComponent<SpriteRenderer>().flipX = false;
+                selfGravity = originalGravity;
             }
-            // launch it and update number of onscreen projectiles
-            Arrow.GetComponent<Rigidbody>().velocity = fireDirection * projectileSpeed;
-            currentProjectiles++;
-            // then call coroutine which checks if its colliding less frequently than unity updates, but enough to be responsive
-            StartCoroutine(ProjectileCoroutine(Arrow));
-        }
+            // first, check grounded things: reset jumps, movement, reset bonked
+            if (m_CharController.isGrounded)
+            {
+                m_Animator.SetBool("Grounded", true);
+                m_Animator.SetBool("Jumping", false);
+                HorizontalMovement();
+                currentJumps = numJumps;
+                verticalSpeed = -selfGravity * Time.deltaTime;
+                if (Input.GetKeyDown("space"))
+                {
+                    source.PlayOneShot(jump1);
+                    verticalSpeed = jumpPower;
+                    m_Animator.SetBool("Jumping", true);
+                }
+            }
+            else // is in air
+            {
+                m_Animator.SetBool("Jumping", false);
+                m_Animator.SetBool("Grounded", false);
+                verticalSpeed -= selfGravity * Time.deltaTime;
+                // put this in here so we can turn around midair- for sprite flipping and shooting
+                if (Input.GetKey(KeyCode.A)) facingRight = false;
+                else if (Input.GetKey(KeyCode.D)) facingRight = true;
+                if (Input.GetKeyDown("space") && currentJumps > 0)
+                {
+                    if (currentJumps == 2)
+                    {
+                        source.PlayOneShot(jump2);
+                    }
+                    else if (currentJumps == 1)
+                    {
+                        source.PlayOneShot(jump3);
+                    }
+                    m_Animator.SetBool("Jumping", true);
+                    HorizontalMovement();
+                    verticalSpeed = jumpPower;
+                    currentJumps--;
+                }
+            }
 
-        // check our two types of 'bonks'
-        // hit head on ceiling bonk
-        if (((m_CharController.collisionFlags & CollisionFlags.Above) != 0)
-            && !headBonked && verticalSpeed > 0)
-        {
-            //start going down again
-            headBonked = true;
-            verticalSpeed = -selfGravity * Time.deltaTime;
-        }
-        // hit side on wall bonk
-        if (((m_CharController.collisionFlags & CollisionFlags.Sides) != 0)
-            && !sideBonked && !m_CharController.isGrounded)
-        {
-            sideBonked = true;
-            horizSpeed = 0;
-        }
+            // shoot projectile code
+            if (Input.GetKeyDown(KeyCode.W) && currentProjectiles < numProjectiles)
+            {
+                source.PlayOneShot(shootArrow);
+                // create an arrow
+                GameObject Arrow = Instantiate(projectile, transform.position, transform.rotation);
+                // set it's direction for both movement and sprite facing
+                Vector3 fireDirection;
+                if (facingRight)
+                {
+                    fireDirection = Vector3.right;
+                    Arrow.GetComponent<SpriteRenderer>().flipX = true;
+                }
+                else
+                {
+                    fireDirection = Vector3.left;
+                    Arrow.GetComponent<SpriteRenderer>().flipX = false;
+                }
+                // launch it and update number of onscreen projectiles
+                Arrow.GetComponent<Rigidbody>().velocity = fireDirection * projectileSpeed;
+                currentProjectiles++;
+                // then call coroutine which checks if its colliding less frequently than unity updates, but enough to be responsive
+                StartCoroutine(ProjectileCoroutine(Arrow));
+            }
 
-        // set and apply the movement to the player object
-        m_Movement.Set(horizSpeed, verticalSpeed, 0f);
-        m_CharController.Move(m_Movement * Time.deltaTime);
+            // check our two types of 'bonks'
+            // hit head on ceiling bonk
+            if (((m_CharController.collisionFlags & CollisionFlags.Above) != 0)
+                && !headBonked && verticalSpeed > 0)
+            {
+                //start going down again
+                headBonked = true;
+                verticalSpeed = -selfGravity * Time.deltaTime;
+            }
+            // hit side on wall bonk
+            if (((m_CharController.collisionFlags & CollisionFlags.Sides) != 0)
+                && !sideBonked && !m_CharController.isGrounded)
+            {
+                sideBonked = true;
+                horizSpeed = 0;
+            }
 
-        // flip the gameObject so the texture faces the other way if we changed direction
-        if (facingRight ^ prevFacingRight)
-        {
-            //some sort of character flip code goes here
-            m_SpriteRenderer.flipX = !m_SpriteRenderer.flipX;
+            // set and apply the movement to the player object
+            m_Movement.Set(horizSpeed, verticalSpeed, 0f);
+            m_CharController.Move(m_Movement * Time.deltaTime);
+
+            // flip the gameObject so the texture faces the other way if we changed direction
+            if (facingRight ^ prevFacingRight)
+            {
+                //some sort of character flip code goes here
+                m_SpriteRenderer.flipX = !m_SpriteRenderer.flipX;
+            }
+            // and set current facing to prev facing for next iteration
+            prevFacingRight = facingRight;
         }
-        // and set current facing to prev facing for next iteration
-        prevFacingRight = facingRight;
     }
 
     private void HorizontalMovement()

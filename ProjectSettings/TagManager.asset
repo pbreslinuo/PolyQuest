@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Switch
   - Exit
+  - BackgroundMusic
   layers:
   - Default
   - TransparentFX

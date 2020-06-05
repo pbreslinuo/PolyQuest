@@ -32,6 +32,12 @@ public class MainMenu : MonoBehaviour
     public AudioClip hover;
     public AudioClip click;
 
+    private float m_Timer;
+    public GameObject dieCanvas;
+    private CanvasGroup dieCanvasGroup;
+    public GameObject deathText; // text child of dieCanvas
+    public GameObject backgroundMusic;
+
     void OnEnable()
     {
         DontDestroyOnLoad(scoreCanvas);
@@ -48,6 +54,7 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
         children = gameObject.GetComponentsInChildren<Transform>();
+        dieCanvasGroup = dieCanvas.GetComponent<CanvasGroup>();
 
         bestMinTutorial = 2;
         bestSecTutorial = 0;
@@ -71,13 +78,15 @@ public class MainMenu : MonoBehaviour
         {
             if (player.died == true)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                player.died = false;
+                dieCanvas.SetActive(true);
+                deathText.SetActive(true);
+                backgroundMusic.SetActive(false);
+                PlayerDied();
             }
             else if (player.finished == true)
             {
-                LevelFinished();
                 player.finished = false;
+                LevelFinished();
             }
         }
     }
@@ -109,6 +118,7 @@ public class MainMenu : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        m_Timer = 0;
         newRecord.SetActive(false);
         CancelInvoke();
         ResetTime();
@@ -128,8 +138,9 @@ public class MainMenu : MonoBehaviour
         else if (!(scene.name == "StartingScene"))
         { // any playable level
             player = GameObject.FindWithTag("Player").GetComponent<PlayerController>(); // get player
+            backgroundMusic = GameObject.FindWithTag("BackgroundMusic");
             scoreCanvas.SetActive(true);
-            foreach (Transform child in children.Skip(1))
+            foreach (Transform child in children.Skip(2))
             {
                 child.gameObject.SetActive(false);
             }
@@ -180,6 +191,18 @@ public class MainMenu : MonoBehaviour
             newRecord.SetActive(true);
         }
         CancelInvoke();
+    }
+
+    public void PlayerDied()
+    {
+        m_Timer += Time.deltaTime;
+        dieCanvasGroup.alpha = m_Timer / 3;
+
+        if (m_Timer > 4)
+        {
+            player.died = false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     public void ResetTime()
