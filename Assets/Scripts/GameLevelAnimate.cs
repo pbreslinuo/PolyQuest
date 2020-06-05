@@ -92,6 +92,10 @@ public class GameLevelAnimate : MonoBehaviour
         foreach (EnemyWaypoint enemy in enemies)
         {
             enemy.move = false;
+            if (enemy.stallTime > 0)
+            { // this part makes sure that Knights don't instantly skip in their Lerp
+                enemy.startTime += enemy.stallTime;
+            }
         }
         if (texts.Length > 0)
         {

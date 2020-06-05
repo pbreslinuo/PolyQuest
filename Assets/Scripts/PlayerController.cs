@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +13,9 @@ public class PlayerController : MonoBehaviour
     public GameObject projectile;
     public GameLevel gameLevel;
     public GameLevelAnimate gameLevelAnimate;
+
+    public bool died;
+    public bool finished;
 
     Vector3 m_Movement;
     CharacterController m_CharController;
@@ -34,6 +36,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        died = false;
+        finished = false;
         m_Transform = GetComponent<Transform>();
         m_CharController = GetComponent<CharacterController>();
         m_Collider = GetComponent<BoxCollider>();
@@ -45,10 +49,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Respawn")
-        { // if you hit an enemy, die and reset the level
-          // to do: die animation
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (other.gameObject.tag == "Enemy")
+        { // if you hit an enemy, die and reset the level (Main Menu looks for the bool "died")
+            died = true;
         }
         if (other.gameObject.tag == "Switch")
         { // if you hit the switch and are grounded, open the gate
@@ -58,30 +61,21 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Exit")
         {
             if (m_CharController.isGrounded)
-            {
+            { // Main Menu looks for the bool "finished"
                 gameLevelAnimate.DisplayWinText();
+                finished = true;
             }
         }
     }
 
     void Update()
     {
-        // reset if the r key is pressed
-        if (Input.GetKey(KeyCode.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-
-        if (Input.GetKey(KeyCode.M))
-        {
-            SceneManager.LoadScene("MainMenu");
-        }
-
         if (Input.GetKey(KeyCode.S))
         {
             selfGravity = 3 * originalGravity;
@@ -90,7 +84,6 @@ public class PlayerController : MonoBehaviour
         {
             selfGravity = originalGravity;
         }
-
         // first, check grounded things: reset jumps, movement, reset bonked
         if (m_CharController.isGrounded)
         {

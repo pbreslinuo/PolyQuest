@@ -11,6 +11,7 @@ public class BatWaypoint : EnemyWaypoint
         stoppingDist = 0.1f;
         waypointCounter = -1;
         SetupNextWaypoint();
+        stallTime = 0;
     }
 
     void Update()

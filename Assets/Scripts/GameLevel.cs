@@ -8,7 +8,7 @@ public class GameLevel : MonoBehaviour
     public GameObject player;
     public GameObject gate;
     public GameLevelAnimate animatedLevel;
-    public float cubeWidth;        // set this publically where cubeWidth = cube's scale 
+    public float cubeWidth;        // set this publically where cubeWidth = cube's scale
     private float halfWidth;
     private Vector3 rotatePoint;
 

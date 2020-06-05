@@ -16,6 +16,7 @@ public class EnemyWaypoint : MonoBehaviour
     public Vector3 nextWaypoint;
     public int waypointCounter;
     public bool move;
+    public float stallTime;
 
     void Start()
     {

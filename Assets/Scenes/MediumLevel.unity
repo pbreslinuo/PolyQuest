@@ -1281,28 +1281,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 294689291}
-  - component: {fileID: 294689290}
   m_Layer: 0
   m_Name: Knight
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!136 &294689290
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294689289}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &294689291
 Transform:
   m_ObjectHideFlags: 0
@@ -3522,7 +3507,7 @@ GameObject:
   - component: {fileID: 1136501692}
   m_Layer: 0
   m_Name: EnemyMovement
-  m_TagString: Respawn
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3567,6 +3552,7 @@ MonoBehaviour:
   nextWaypoint: {x: 0, y: 0, z: 0}
   waypointCounter: 0
   move: 0
+  stallTime: 0
   anyMovement: 0
 --- !u!136 &1136501693
 CapsuleCollider:
@@ -4311,7 +4297,7 @@ GameObject:
   - component: {fileID: 1318786369}
   m_Layer: 0
   m_Name: EnemyMovement
-  m_TagString: Respawn
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4354,6 +4340,7 @@ MonoBehaviour:
   nextWaypoint: {x: 0, y: 0, z: 0}
   waypointCounter: 0
   move: 0
+  stallTime: 0
   anyMovement: 0
 --- !u!136 &1318786370
 CapsuleCollider:
@@ -5731,10 +5718,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1690649722}
-  - component: {fileID: 1690649723}
   m_Layer: 0
   m_Name: Knight (1)
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5756,20 +5742,6 @@ Transform:
   m_Father: {fileID: 1171921725}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1690649723
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1690649721}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1697481950
 GameObject:
   m_ObjectHideFlags: 0

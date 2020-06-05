@@ -7,12 +7,11 @@ public class KnightWaypoint : EnemyWaypoint
 {
     private Animator m_Animator;    
     private float endWait;
-    private float stallTime;
     private bool standingStill;
     public bool anyMovement;
 
     void Start()
-    { // eventually will need to clean up how enemies are coded in terms of children, waypoints, and tagging them as enemies vs respawn
+    {
         m_Animator = GetComponentInChildren<Animator>();
         stallTime = 3; // seconds
         endWait = 0;
