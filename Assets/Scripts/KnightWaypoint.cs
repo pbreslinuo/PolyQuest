@@ -8,6 +8,7 @@ public class KnightWaypoint : EnemyWaypoint
     private Animator m_Animator;
     private bool standingStill;
     public bool anyMovement;
+    private bool atWaypoint;
 
     void Start()
     {
@@ -15,6 +16,7 @@ public class KnightWaypoint : EnemyWaypoint
         stallTime = 3; // seconds
         endWait = 0;
         move = true;
+        atWaypoint = false;
         stoppingDist = 0.1f;
         waypointCounter = -1;
 
@@ -46,6 +48,7 @@ public class KnightWaypoint : EnemyWaypoint
                 transform.position = Vector3.Lerp(startingPos, nextWaypoint, fracJourney);
                 if (Vector3.Distance(transform.position, nextWaypoint) < stoppingDist)
                 {
+                    atWaypoint = true;
                     SetupNextWaypoint();
                     endWait = Time.time + stallTime;
                     startTime += stallTime;
@@ -67,6 +70,11 @@ public class KnightWaypoint : EnemyWaypoint
         else
         {
             standingStill = false;
+            if (atWaypoint)
+            {
+                SetPositions();
+                atWaypoint = false;
+            }
         }
     }
 }
