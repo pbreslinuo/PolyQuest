@@ -43,11 +43,13 @@ public class PlayerController : MonoBehaviour
     public AudioClip jump3;
     public AudioClip shootArrow;
     public AudioClip victory;
+    private bool vicotryPlayed;
 
     void Start()
     {
         died = false;
         finished = false;
+        vicotryPlayed = false;
         m_Transform = GetComponent<Transform>();
         m_CharController = GetComponent<CharacterController>();
         m_Collider = GetComponent<BoxCollider>();
@@ -82,7 +84,11 @@ public class PlayerController : MonoBehaviour
             { // Main Menu looks for the bool "finished"
                 gameLevelAnimate.DisplayWinText();
                 finished = true;
-                source.PlayOneShot(victory);
+                if (!vicotryPlayed)
+                {
+                    source.PlayOneShot(victory);
+                    vicotryPlayed = true;
+                }
             }
         }
     }
