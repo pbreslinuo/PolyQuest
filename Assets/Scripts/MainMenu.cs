@@ -19,18 +19,30 @@ public class MainMenu : MonoBehaviour
 
     private double bestMin;
     private double bestSec;
-
     private double currentMin;
     private double currentSec;
-
     private double bestMinTutorial;
     private double bestSecTutorial;
-
     private double bestMinMedium;
     private double bestSecMedium;
-
     private double bestMinHard;
     private double bestSecHard;
+
+    public AudioSource source;
+    public AudioClip hover;
+    public AudioClip click;
+
+    void OnEnable()
+    {
+        DontDestroyOnLoad(scoreCanvas);
+        DontDestroyOnLoad(this);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
     void Start()
     {
@@ -70,6 +82,16 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    public void HoverSound()
+    {
+        source.PlayOneShot(hover);
+    }
+
+    public void ClickSound()
+    {
+        source.PlayOneShot(click);
+    }
+
     void UpdateTimer()
     {
         currentSec = (currentSec + 1) % 60;
@@ -83,18 +105,6 @@ public class MainMenu : MonoBehaviour
             currentTimeText.text = "Current time:  >1hr";
             CancelInvoke();
         }
-    }
-
-    void OnEnable()
-    {
-        DontDestroyOnLoad(scoreCanvas);
-        DontDestroyOnLoad(this);
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

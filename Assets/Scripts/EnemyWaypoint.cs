@@ -15,8 +15,9 @@ public class EnemyWaypoint : MonoBehaviour
     public Vector3 startingPos;
     public Vector3 nextWaypoint;
     public int waypointCounter;
-    public bool move;
+    public bool move; // turns off when the level rotates and back on when it's done
     public float stallTime;
+    public float endWait;
 
     void Start()
     {

@@ -34,6 +34,16 @@ public class PlayerController : MonoBehaviour
     private bool sideBonked;
     private float originalGravity;
 
+    public AudioSource source;
+    public AudioClip gameOver;
+    public AudioClip gateOpen;
+    public AudioClip hitEnemy;
+    public AudioClip jump1;
+    public AudioClip jump2;
+    public AudioClip jump3;
+    public AudioClip shootArrow;
+    public AudioClip victory;
+
     void Start()
     {
         died = false;
@@ -52,12 +62,14 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Enemy")
         { // if you hit an enemy, die and reset the level (Main Menu looks for the bool "died")
             died = true;
+            source.PlayOneShot(gameOver);
         }
         if (other.gameObject.tag == "Switch")
         { // if you hit the switch and are grounded, open the gate
             if (m_CharController.isGrounded)
             {
                 gameLevel.SwitchHit();
+                source.PlayOneShot(gateOpen);
             }
         }
     }
@@ -70,6 +82,7 @@ public class PlayerController : MonoBehaviour
             { // Main Menu looks for the bool "finished"
                 gameLevelAnimate.DisplayWinText();
                 finished = true;
+                source.PlayOneShot(victory);
             }
         }
     }
@@ -94,6 +107,7 @@ public class PlayerController : MonoBehaviour
             verticalSpeed = -selfGravity * Time.deltaTime;
             if (Input.GetKeyDown("space"))
             {
+                source.PlayOneShot(jump1);
                 verticalSpeed = jumpPower;
                 m_Animator.SetBool("Jumping", true);
             }
@@ -108,6 +122,14 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetKey(KeyCode.D)) facingRight = true;
             if (Input.GetKeyDown("space") && currentJumps > 0)
             {
+                if (currentJumps == 2)
+                {
+                    source.PlayOneShot(jump2);
+                }
+                else if (currentJumps == 1)
+                {
+                    source.PlayOneShot(jump3);
+                }
                 m_Animator.SetBool("Jumping", true);
                 HorizontalMovement();
                 verticalSpeed = jumpPower;
@@ -118,6 +140,7 @@ public class PlayerController : MonoBehaviour
         // shoot projectile code
         if (Input.GetKeyDown(KeyCode.W) && currentProjectiles < numProjectiles)
         {
+            source.PlayOneShot(shootArrow);
             // create an arrow
             GameObject Arrow = Instantiate(projectile, transform.position, transform.rotation);
             // set it's direction for both movement and sprite facing
@@ -204,6 +227,7 @@ public class PlayerController : MonoBehaviour
         {
             currentProjectiles--;
             Destroy(thisObject);
+            source.PlayOneShot(hitEnemy);
         }
         // otherwise call this coroutine again
         else StartCoroutine(ProjectileCoroutine(thisObject));

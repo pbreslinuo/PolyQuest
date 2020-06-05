@@ -5,8 +5,7 @@ using UnityEngine.AI;
 
 public class KnightWaypoint : EnemyWaypoint
 {
-    private Animator m_Animator;    
-    private float endWait;
+    private Animator m_Animator;
     private bool standingStill;
     public bool anyMovement;
 
