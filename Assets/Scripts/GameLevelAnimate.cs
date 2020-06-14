@@ -37,7 +37,7 @@ public class GameLevelAnimate : MonoBehaviour
         finished = false;
         moveGate = false;
         displayText = true;
-        numRotates = 18;
+        numRotates = 12;
         numRotatesLeft = 0;
         textNum = 0;
         winText.SetActive(false);

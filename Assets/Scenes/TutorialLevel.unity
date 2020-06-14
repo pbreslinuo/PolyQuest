@@ -4085,7 +4085,8 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Welcome to PolyQuest! Use A, D, and Space to move. Your goal is to get to
-    the exit. Go past the edge of the cube to the right and see what happens!
+    the exit. Princess Poly waits at the end of the third level! Go past the edge
+    of the cube to the right and see what happens.
 --- !u!222 &1126795712
 CanvasRenderer:
   m_ObjectHideFlags: 0
