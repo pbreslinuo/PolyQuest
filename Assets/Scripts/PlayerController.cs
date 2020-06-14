@@ -43,13 +43,15 @@ public class PlayerController : MonoBehaviour
     public AudioClip jump3;
     public AudioClip shootArrow;
     public AudioClip victory;
-    private bool vicotryPlayed;
+    private bool victoryPlayed;
+    private bool switchPlayed;
 
     void Start()
     {
         died = false;
         finished = false;
-        vicotryPlayed = false;
+        victoryPlayed = false;
+        switchPlayed = false;
         m_Transform = GetComponent<Transform>();
         m_CharController = GetComponent<CharacterController>();
         m_Collider = GetComponent<BoxCollider>();
@@ -63,15 +65,22 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         { // if you hit an enemy, die and reset the level (Main Menu looks for the bool "died")
-            died = true;
-            source.PlayOneShot(gameOver);
+            if (!died)
+            {
+                source.PlayOneShot(gameOver);
+            }
+            died = true;       
         }
         if (other.gameObject.tag == "Switch")
         { // if you hit the switch and are grounded, open the gate
             if (m_CharController.isGrounded)
             {
                 gameLevel.SwitchHit();
-                source.PlayOneShot(gateOpen);
+                if (!switchPlayed)
+                {
+                    source.PlayOneShot(gateOpen);
+                    switchPlayed = true;
+                }               
             }
         }
     }
@@ -84,10 +93,10 @@ public class PlayerController : MonoBehaviour
             { // Main Menu looks for the bool "finished"
                 gameLevelAnimate.DisplayWinText();
                 finished = true;
-                if (!vicotryPlayed)
+                if (!victoryPlayed)
                 {
                     source.PlayOneShot(victory);
-                    vicotryPlayed = true;
+                    victoryPlayed = true;
                 }
             }
         }
@@ -95,7 +104,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (died == false)
+        if (died == false && finished == false)
         {
             if (Input.GetKey(KeyCode.S))
             {

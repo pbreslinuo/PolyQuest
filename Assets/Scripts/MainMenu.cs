@@ -27,6 +27,7 @@ public class MainMenu : MonoBehaviour
     private double bestSecMedium;
     private double bestMinHard;
     private double bestSecHard;
+    private bool firstPassFinish;
 
     public AudioSource source;
     public AudioClip hover;
@@ -62,6 +63,7 @@ public class MainMenu : MonoBehaviour
         bestSecMedium = 0;
         bestMinHard = 10;
         bestSecHard = 0;
+        firstPassFinish = true;
     }
 
     private void Update()
@@ -85,15 +87,19 @@ public class MainMenu : MonoBehaviour
             }
             else if (player.finished == true)
             {
-                player.finished = false;
-                LevelFinished();
+                if (firstPassFinish)
+                { // do these once on level finish
+                    backgroundMusic.SetActive(false);
+                    LevelFinished();
+                    firstPassFinish = false;
+                }
             }
         }
     }
 
     public void HoverSound()
     {
-        source.PlayOneShot(hover);
+        source.PlayOneShot(hover, 2);
     }
 
     public void ClickSound()
@@ -138,6 +144,8 @@ public class MainMenu : MonoBehaviour
         else if (!(scene.name == "StartingScene"))
         { // any playable level
             player = GameObject.FindWithTag("Player").GetComponent<PlayerController>(); // get player
+            player.finished = false;
+            firstPassFinish = true;
             backgroundMusic = GameObject.FindWithTag("BackgroundMusic");
             scoreCanvas.SetActive(true);
             foreach (Transform child in children.Skip(2))
